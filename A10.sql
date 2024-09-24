@@ -1,0 +1,1 @@
+select winnername,count(winnerName) as c,round(avg(minutes),2) from ATPResult group by winnerName having count(winnerName)>=10;

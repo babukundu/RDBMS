@@ -1,0 +1,1 @@
+select title from titles where title not in (select title from castmembers join people using(person_id) join titles using(title_id) where died is not null group by titles.title);

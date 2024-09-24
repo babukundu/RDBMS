@@ -1,0 +1,37 @@
+select category,count(category) as number_of_occurrences from crewmembers group by category;
+
+
+select category,count(person_id) as number_of_people from crewmembers group by person_id;
+
+
+select premiered as year,count(*) as number_of_movies from titles group by premiered order by count(*) desc;
+
+
+select * from people where name in (select name from people group by name having count(person_id)>1);
+
+
+
+
+
+select count(person_id) from people where died is null;
+
+
+select title,count(*) from castmembers join people using(person_id) join titles using(title_id) where died is null group by titles.title;
+
+
+
+
+
+select title,count(person_id) from titles left join crewmembers using(title_id) group by title;
+
+
+
+select title,count(person_id) from titles left join castmembers using(title_id) group by title;
+select title from titles where title not in (select title from castmembers join people using(person_id) join titles using(title_id) where died is not null group by titles.title);
+
+
+select premiered/10*10 ||"s" as decade,title,rating from titles join ratings using(title_id) order by premiered;
+select (premiered/10*10) ||'s' as d,rating from ratings join titles using(title_id) group by d;
+select a.decade||"s" as decade,a.title,a.rating from (select premiered/10*10 as decade,title,rating from titles join ratings using(title_id) order by premiered) as a
+join (select premiered/10*10 as d,rating from ratings join titles using(title_id) group by premiered/10*10) as b
+on a.decade=b.d and a.rating=b.rating;

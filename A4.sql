@@ -1,0 +1,1 @@
+select people.name,castmembers.characters from castmembers join people on castmembers.person_id = people.person_id where castmembers.title_id=='tt0172495';

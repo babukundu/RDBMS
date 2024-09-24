@@ -1,0 +1,1 @@
+select * from people where name in (select name from people group by name having count(person_id)>1);

@@ -1,0 +1,27 @@
+1. select * from City where population>2500000;
+
+2. select City.name,Country.name from City inner join Country on City.countryCode=Country.code and continent=="Europe";
+
+3. select City.name,Country.name from City inner join Country on City.countryCode=Country.code and Country.name=="Australia";
+
+4. select countryCode from CountryLanguage where language=="English";
+
+5. select * from CountryLanguage where countryCode=="AFG";
+
+6. select Country.name,CountryLanguage.language from Country inner join CountryLanguage on Country.code=CountryLanguage.countryCode;
+
+7. select Country.name,CountryLanguage.language from Country inner join CountryLanguage on Country.code=CountryLanguage.countryCode and 
+    isOfficial=="T";
+
+8. select Country.name from Country inner join CountryLanguage on Country.code=CountryLanguage.countryCode and isOfficial=="T" and 
+   CountryLanguage.language=="French";
+
+9. select Country.name from Country inner join CountryLanguage on Country.code=CountryLanguage.countryCode and isOfficial=="T" and 
+    CountryLanguage.language=="French" and CountryLanguage.percentage<25;
+
+10. select capital from Country; If we dont specify the values, it may take NULL values.
+
+11. select Country.name,City.name from Country inner join City on Country.capital==City.id;
+
+12. select c1.countryCode from CountryLAnguage as c1,CountryLAnguage as c2 where c1.countryCode==c2.countryCode and 
+    c1.language=="English" and c2.language=="French" and c1.isOfficial=="T"and c2.isOfficial=="T";

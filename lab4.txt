@@ -1,0 +1,35 @@
+select * from people where person_id = 'nm0675356';
+
+
+select * from castmembers where title_id = 'tt0172495';
+
+
+select people.name,castmembers.characters from castmembers join people on castmembers.person_id = people.person_id where castmembers.title_id=='tt0172495';
+
+select people.name,castmembers.characters from castmembers join people using(person_id) where castmembers.title_id=='tt0172495';
+
+
+select * from ratings join titles on ratings.title_id=titles.title_id where ratings.rating>8.5;
+
+
+select titles.title,ratings.rating,ratings.votes from ratings join titles on ratings.title_id=titles.title_id where votes>1000000 order by rating desc;
+
+
+select titles.title,people.name from titles join crewmembers on titles.title_id=crewmembers.title_id join people on crewmembers.person_id=people.person_id where crewmembers.category='director';
+
+
+select distinct(rating) from ratings;
+
+
+select count(characters) from castmembers where title_id='tt0167260';
+
+
+select min(runtime_minutes) as shortest,max(runtime_minutes) as longest,avg(runtime_minutes) as average from titles;
+
+
+select title,(runtime_minutes/60) as hours,(runtime_minutes%60) as minutes from titles;
+
+
+select titles.title,people.name from castmembers join people using(person_id) join ratings using(title_id) join titles using(title_id) where ratings.rating>=9;
+
+select count(rating) from ratings where rating>=9;

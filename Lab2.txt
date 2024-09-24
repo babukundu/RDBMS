@@ -1,0 +1,22 @@
+4. select * from AFLResult where homeScore>awayScore;
+
+
+5. select * from AFLResult where homeScore>awayScore and year=="2020" and homeTeam=="Fremantle";
+
+
+6. select * from AFLResult where homeTeam=="Fremantle" and awayTeam="West Coast";
+
+
+7. select * from AFLResult where homeScore=awayScore+1 or awayScore=homeScore+1;
+
+
+8. select *,abs(homeScore-awayScore) from AFLResult;
+
+
+9. select * from AFLResult where homeTeam=="Fremantle" and awayTeam="Adelaide Crows" or homeTeam=="Fremantle" and awayTeam=="Port Adelaide" 
+    or homeTeam=="West Coast" and awayTeam="Adelaide Crows" 
+    or homeTeam=="West Coast" and awayTeam=="Port Adelaide";
+
+
+
+10. select * from AFLResult where homeTeam=="West Coast" and homeScore>awayScore or awayTeam=="West Coast" and awayScore>homeScore;

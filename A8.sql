@@ -1,0 +1,1 @@
+select yr,winnerName,count(yr) from WTAResult where winnerCountry="AUS" group by yr,winnerName;

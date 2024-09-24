@@ -1,0 +1,34 @@
+select yr,winnerName,losername from ATPResult where loserName in ('Roger Federer', 'Rafael Nadal', 'Novak Djokovic', 'Andy Murray');
+
+
+select winnerName,count(winnerName) from ATPResult where loserName in ('Roger Federer', 'Rafael Nadal', 'Novak Djokovic', 'Andy Murray') group by winnerName; 
+
+
+select losername,count(loserName) from ATPResult where winnerName in ('Roger Federer', 'Rafael Nadal', 'Novak Djokovic', 'Andy Murray') group by loserName order by count(loserName) desc ;
+
+
+select winnerCountry,count(winnerCountry) from WTAResult group by winnerCountry order by count(winnerCountry) desc;
+
+
+select distinct(customerNumber) from payments;
+
+
+select min(amount),max(amount),avg(amount) from payments;
+
+
+select customerNumber,count(customerNumber),sum(amount) from payments group by customerNumber;
+
+
+select customers.customerName,count(payments.customerNumber),sum(payments.amount) from customers join payments on customers.customerNumber=payments.customerNumber group by payments.customerNumber order by customers.customerName;
+
+
+select customerName from customers join payments on customers.customerNumber=payments.customerNumber where payments.amount>(select avg(amount) from payments) group by customers.customerName;
+
+
+select customerName from customers where customers.customerNumber not in (select customerNumber from payments group by customerNumber) order by customerName;
+
+
+select orderNumber from orderdetails group by orderNumber having count(orderNumber)==1;
+
+
+select distinct(orderNumber) from orderdetails join products on orderdetails.productCode=products.productCode where productLine=='Planes';

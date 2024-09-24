@@ -1,0 +1,25 @@
+select count(*) from orders;
+
+select officeCode,city from offices;
+
+select employees.lastName from employees join offices on employees.officeCode=offices.officeCode where offices.city like 'sydney';
+
+select count(distinct(customernumber)) from orders;
+
+select customers.customerNumber from customers left join orders on customers.customerNumber=orders.customerNumber except select customers.customerNumber from customers right join orders on customers.customerNumber=orders.customerNumber;
+
+select sum(quantityOrdered*priceEach) from orderdetails where orderNumber='10122';
+
+select distinct(orders.orderNumber) from orders join orderdetails on orders.orderNumber=orderdetails.orderNumber where orderdetails.productCode='S18_1662';
+
+select products.productName,orderdetails.quantityOrdered,(orderdetails.quantityOrdered*orderdetails.priceEach) from orderdetails join products on orderdetails.productCode=products.productCode where orderNumber='10122';
+
+select firstName,lastName from employees where reportsTo='1102';
+
+select firstName||', '||lastName from employees;
+
+select firstName,lastName from employees where reportsTo isNULL;
+
+select * from orderdetails join products on orderdetails.productCode=products.productCode where orderdetails.orderNumber='10129';
+
+select distinct a.orderNumber from (select orderdetails.orderNumber,products.productLine from orderdetails join products on orderdetails.productCode=products.productCode) as a join (select orderdetails.orderNumber,products.productLine from orderdetails join products on orderdetails.productCode=products.productCode) as b on a.orderNumber=b.orderNumber where a.productLine like 'Ships' and b.productLine like 'Planes';

@@ -1,0 +1,1 @@
+select titles.title,people.name from titles join crewmembers on titles.title_id=crewmembers.title_id join people on crewmembers.person_id=people.person_id where crewmembers.category='director';

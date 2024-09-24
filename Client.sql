@@ -1,0 +1,7 @@
+CREATE TABLE Client (
+clientId INTEGER PRIMARY KEY
+UNIQUE
+NOT NULL,
+name TEXT NOT NULL,
+residence TEXT NOT NULL
+);

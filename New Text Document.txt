@@ -1,0 +1,58 @@
+CREATE TABLE BookEdition (
+ISBN TEXT PRIMARY KEY
+NOT NULL
+UNIQUE
+CHECK (length(ISBN) = 5),
+title TEXT,
+author TEXT NOT NULL,
+publicationDate INTEGER NOT NULL,
+genre TEXT NOT NULL
+CONSTRAINT Valid_Checkdigit CHECK (SUBSTR(CAST (ISBN AS INT), 5, 1) = SUBSTR(3 * (SUBSTR(CAST (ISBN AS INT), 1, 1) + SUBSTR(CAST (ISBN AS INT), 3, 1) ) + 7 * (SUBSTR(CAST (ISBN AS INT), 2, 1) + SUBSTR(CAST (ISBN AS INT), 4, 1) ), -1) ) 
+);
+
+CREATE TABLE BookCopy (
+ISBN TEXT 
+NOT NULL,
+copyNumber INTEGER NOT NULL,
+daysLoaned INTEGER,
+CONSTRAINT fk FOREIGN KEY (ISBN) REFERENCES BookEdition (ISBN),
+CONSTRAINT pk PRIMARY KEY (ISBN,copyNumber)
+);
+
+CREATE TABLE loan (
+clientId INT,
+ISBN TEXT 
+NOT NULL,
+copyNumber INTEGER NOT NULL,
+dateOut TEXT NOT NULL,
+dateBack TEXT,
+FOREIGN KEY (clientId) REFERENCES Client (clientId) ON DELETE SET NULL,
+FOREIGN KEY (ISBN,copyNumber) REFERENCES BookCopy (ISBN,copyNumber)
+);
+
+CREATE TABLE Client (
+clientId INTEGER PRIMARY KEY
+UNIQUE
+NOT NULL,
+name TEXT NOT NULL,
+residence TEXT NOT NULL
+);
+
+CREATE VIEW ReadingHistory as SELECT b.clientId,b.y AS yr,a.genre,COUNT(a.genre) AS numLoans FROM BookEdition AS a JOIN 
+(SELECT clientId,loan.ISBN,STRFTIME('%Y',dateOut) AS y,loan.copyNumber FROM loan JOIN BookCopy
+ON loan.ISBN=BookCopy.ISBN AND loan.copyNumber=BookCopy.copyNumber) AS b ON a.ISBN=b.ISBN GROUP BY genre,clientId,y;
+
+CREATE TRIGGER calculatedays AFTER UPDATE OF dateBack
+ON loan
+FOR EACH ROW
+WHEN NEW.ISBN=OLD.ISBN AND NEW.copyNumber=OLD.copyNumber AND NEW.clientId=OLD.clientId AND NEW.dateOut=OLD.dateOut
+BEGIN
+    UPDATE BookCopy
+    SET daysLoaned = 
+    CASE 
+       WHEN daysLoaned IS NULL THEN (julianday(NEW.dateBack)-julianday(NEW.dateOut))
+       WHEN daysLoaned IS NOT NULL THEN (daysLoaned+(julianday(NEW.dateBack)-julianday(NEW.dateOut)))
+       ELSE NULL
+   END
+    WHERE ISBN=NEW.ISBN AND copyNumber=NEW.copyNumber;
+END;

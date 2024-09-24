@@ -1,0 +1,41 @@
+select count(title),premiered from titles group by premiered;
+
+
+select count(employeeNumber),city from employees join offices on employees.officeCode=offices.officeCode group by city;
+
+
+select yr,count(winnerName) from WTAResult where winnerCountry="AUS" group by yr;
+
+
+select yr,winnerName,count(yr) from WTAResult where winnerCountry="AUS" group by yr,winnerName;
+
+
+select productLine,max(buyPrice) from products group by productLine;
+
+
+select orderNumber,count(productCode), round(sum(quantityOrdered*priceEach),2) from orderdetails group by orderNumber;
+
+
+select yr,round(count(winnerName)/1.27,2) from ATPResult where winnerAge<loserAge group by yr;
+
+
+select winnername,count(winnerName) as c,round(avg(minutes),2) from ATPResult group by winnerName having count(winnerName)>=10; 
+
+
+select orderNumber,productLine,count(productLine),round(sum(quantityOrdered*priceEach),2) from orderdetails join products on orderdetails.productCode=products.productCode group by orderNumber,productLine;
+
+
+select orderNumber,round(sum(quantityOrdered*(priceEach-buyPrice)),2) from orderdetails join products on orderdetails.productCode=products.productCode group by orderNumber;
+
+
+select orderNumber,round(sum(quantityOrdered*priceEach),2),customers.customerName from orderdetails join orders on orderdetails.orderNumber=orders.orderNumber join customers on orders.customerNumber=customers.customerNumber group by customers.customerName having round(sum(quantityOrdered*priceEach),2)>=500000;
+
+
+select year,round, CASE WHEN (homeScore > awayScore) THEN homeScore WHEN (homeScore < awayScore) THEN awayScore ELSE awayScore END as winning_score FROM AFLResult;
+
+
+select year,avg(CASE WHEN (homeScore > awayScore) THEN homeScore WHEN (homeScore < awayScore) THEN awayScore ELSE awayScore END) as avg_winning_score FROM AFLResult group by year;
+
+
+select year,round, CASE WHEN (homeScore > awayScore) THEN homeScore WHEN (homeScore < awayScore) THEN awayScore END as winning_score,CASE WHEN (homeScore > awayScore) THEN homeTeam WHEN (homeScore < awayScore) THEN awayTeam END as winning_team FROM AFLResult group by year,winning_team;
+select * from AFLResult where year='2019';
